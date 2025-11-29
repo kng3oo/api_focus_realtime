@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Focus Realtime Dashboard</title>
+  <style>
+    body{font-family:Arial,system-ui;background:#020617;color:#e5e7eb;margin:0;padding:16px}
+    h1{margin-top:0;margin-bottom:12px}
+    .row{display:flex;flex-wrap:wrap;gap:12px}
+    .card{background:#020617;border-radius:10px;padding:12px;border:1px solid #1e293b;box-shadow:0 4px 10px rgba(0,0,0,0.4);flex:1;min-width:280px}
+    #cam{max-width:980px;width:100%;border-radius:8px;background:#000}
+    label{font-size:0.9rem;color:#9ca3af}
+    input[type="text"]{padding:6px 10px;border-radius:8px;border:1px solid #334155;background:#0b1220;color:#e5e7eb}
+    button{padding:8px 14px;border:none;border-radius:8px;margin-right:6px;cursor:pointer;font-weight:700}
+    .btn-start{background:#22c55e;color:#022c22}
+    .btn-stop{background:#ef4444;color:#fee2e2}
+    .btn-snap{background:#3b82f6;color:#dbeafe}
+    .btn-dl{background:#a78bfa;color:#1f1147}
+    .metric{margin:6px 0}
+    .metric span.label{color:#9ca3af;margin-right:6px}
+    .metric span.value{font-weight:700}
+    pre{background:#0b1220;border-radius:10px;padding:10px;border:1px solid #1e293b;overflow:auto}
+    ul{padding-left:18px;margin:6px 0}
+    li{font-size:0.9rem}
+    .hint{font-size:0.85rem;color:#9ca3af}
+  </style>
+</head>
+<body>
+  <h1>Focus Realtime Dashboard</h1>
+
+  <div class="card" style="margin-bottom:12px;">
+    <div style="display:flex;flex-wrap:wrap;align-items:end;gap:10px;">
+      <div>
+        <label for="username">사용자 이름</label><br/>
+        <input id="username" type="text" placeholder="예: 홍길동"/>
+      </div>
+
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <button class="btn-start" id="btnStart">시작</button>
+        <button class="btn-stop" id="btnStop">중지</button>
+        <button class="btn-snap" id="btnSnap">현재 이미지 저장</button>
+        <button class="btn-dl" id="btnLog">로그 CSV 다운로드</button>
+        <button class="btn-dl" id="btnZip">스크린샷 ZIP 다운로드</button>
+      </div>
+
+      <div class="hint">
+        ※ 이름 입력 후 <b>시작</b>을 눌러야 프레임 전송이 시작됩니다.<br/>
+        ※ 카메라는 <b>로컬 브라우저</b>에서만 사용됩니다(서버는 분석만).
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="card">
+      <h3>Live Camera (Local)</h3>
+      <video id="cam" autoplay playsinline muted></video>
+      <p class="hint" style="margin-top:8px;">
+        서버에는 프레임(JPEG)만 전송됩니다. 원본(raw)은 저장하지 않습니다.
+      </p>
+      <p class="hint" style="color:#94a3b8;">
+        집중도 40% 미만 시 자동으로 “오버레이 포함 이미지”가 screenshots/ 에 저장됩니다.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>집중도 & 평균</h3>
+      <div class="metric"><span class="label">현재 집중도:</span> <span id="focusNow" class="value">0%</span></div>
+      <div class="metric"><span class="label">10초 평균:</span> <span id="avg10" class="value">0%</span></div>
+      <div class="metric"><span class="label">1분 평균:</span> <span id="avg60" class="value">0%</span></div>
+      <div class="metric"><span class="label">10분 평균:</span> <span id="avg600" class="value">0%</span></div>
+
+      <div class="metric"><span class="label">FPS(서버):</span> <span id="fps" class="value">0</span></div>
+      <div class="metric"><span class="label">Frames(세션):</span> <span id="frames" class="value">0</span></div>
+      <div class="metric"><span class="label">Saved Images:</span> <span id="saved" class="value">0</span></div>
+
+      <div class="hint" style="margin-top:10px;">
+        공식: <b>Focus = Emotion(70%) + Blink(30%)</b><br/>
+        자동 저장 임계: <b>40%</b> (미만 시 저장)
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>감정 빈도수 랭킹 (세션 기준)</h3>
+      <ul id="emotionRank"></ul>
+
+      <h3 style="margin-top:12px;">Latest Detail</h3>
+      <pre id="latest" style="font-size:0.85rem;max-height:240px;">loading...</pre>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

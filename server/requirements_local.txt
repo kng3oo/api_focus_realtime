@@ -1,0 +1,17 @@
+fastapi
+uvicorn[standard]
+python-multipart
+
+opencv-python==4.9.0.80
+mediapipe==0.10.9
+
+numpy==1.24.4
+pillow==10.2.0
+pandas==2.2.0
+matplotlib==3.8.0
+
+torch==2.2.0+cpu
+torchvision==0.17.0+cpu
+--extra-index-url https://download.pytorch.org/whl/cpu
+
+timm==0.9.16

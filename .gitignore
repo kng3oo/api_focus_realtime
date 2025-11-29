@@ -1,0 +1,6 @@
+venv/
+server/screenshots/
+server/runs/
+server/models/
+*.zip
+*.yaml

@@ -1,0 +1,24 @@
+fastapi
+uvicorn[standard]
+python-multipart
+
+# === 기본 패키지 ===
+numpy==1.26.4
+pandas
+pillow
+matplotlib
+
+# === OpenCV (EC2용 headless) ===
+opencv-python-headless
+
+# === MediaPipe ===
+mediapipe
+
+# === Torch (CPU 전용, EC2 호환) ===
+--index-url https://download.pytorch.org/whl/cpu
+torch==2.2.2+cpu
+torchvision==0.17.2+cpu
+--extra-index-url https://pypi.org/simple
+
+# === timm ===
+timm
